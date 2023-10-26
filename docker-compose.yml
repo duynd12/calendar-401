@@ -1,0 +1,43 @@
+version: '3.0'
+services:
+    nginx:
+      build:
+        context: .
+        dockerfile: ./docker/nginx/Dockerfile
+      container_name: nginx
+      ports:
+        - 81:80
+      volumes:
+        - ./:/var/www/html
+      networks:
+        - my-network
+    app:
+      build:
+        context: .
+        dockerfile: ./docker/app/Dockerfile
+      working_dir: /var/www/html
+      tty: true
+      volumes: 
+        - ./:/var/www/html
+      networks:
+        - my-network
+      container_name: app
+    mysql:
+      image: mysql:latest
+      container_name: mysql
+      environment:
+        MYSQL_DATABASE: ${DB_DATABASE}
+        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        MYSQL_ROOT_USER: ${DB_USERNAME}
+      restart: always
+      ports:
+        - "3309:3306"
+      volumes:
+        - mydb:/var/lib/mysql
+      networks:
+        - my-network
+networks:
+  my-network: 
+    driver: bridge
+volumes:
+  mydb:
