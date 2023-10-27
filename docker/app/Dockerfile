@@ -22,10 +22,10 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
 # Set working directory
 WORKDIR /var/www/html
 
 USER $user
-
 COPY . /var/www/html/
+RUN composer install
+RUN php artisan key:generate
