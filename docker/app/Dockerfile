@@ -31,4 +31,6 @@ COPY . /var/www/html/
 RUN chown -R www-data:www-data /var/www/html
 USER www-data
 RUN composer install
+COPY . .
+RUN composer dumpautoload --optimize
 RUN php artisan key:generate
