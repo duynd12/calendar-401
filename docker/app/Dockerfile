@@ -27,5 +27,9 @@ WORKDIR /var/www/html
 
 USER $user
 COPY . /var/www/html/
-RUN composer install
-RUN php artisan key:generate
+
+RUN /var/www/html composer install
+RUN chown -R 777 \
+    /var/www/html/storage \
+    /var/www/html/bootstrap/cache
+RUN /var/www/html/php artisan key:generate
