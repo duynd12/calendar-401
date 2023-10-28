@@ -28,7 +28,7 @@ WORKDIR /var/www/html
 USER $user
 COPY . /var/www/html/
 
-RUN chown -R 777 \
-    /var/www/html
-RUN /var/www/html composer install
-RUN /var/www/html/php artisan key:generate
+RUN chown -R www-data:www-data /var/www/html
+USER www-data
+RUN composer install
+RUN php artisan key:generate
