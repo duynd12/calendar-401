@@ -25,12 +25,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
-USER $user
 COPY . /var/www/html/
 
-RUN chown -R www-data:www-data /var/www/html
-USER www-data
-RUN composer install
-COPY . .
-RUN composer dumpautoload --optimize
-RUN php artisan key:generate
+RUN cd /var/www/html && composer install && php artisan key:generate
